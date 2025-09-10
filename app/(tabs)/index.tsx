@@ -1,12 +1,25 @@
 import { Image } from 'expo-image';
+import { useEffect, useState } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { app } from '../firebaseConfig';
 
 export default function HomeScreen() {
+  const [firebaseStatus, setFirebaseStatus] = useState<string>('Checking...');
+
+  useEffect(() => {
+    // Test Firebase connection
+    if (app) {
+      setFirebaseStatus('✅ Firebase Connected Successfully!');
+    } else {
+      setFirebaseStatus('❌ Firebase Connection Failed');
+    }
+  }, []);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -19,6 +32,10 @@ export default function HomeScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
+      </ThemedView>
+      <ThemedView style={styles.stepContainer}>
+        <ThemedText type="subtitle">Firebase Status</ThemedText>
+        <ThemedText>{firebaseStatus}</ThemedText>
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
